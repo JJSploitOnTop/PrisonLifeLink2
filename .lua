@@ -1,6 +1,10 @@
-
 local ExecutionTime = tick()
 
+local function Rejoin(SIR)
+game.Players.LocalPlayer:kick(SIR)
+local telepoitserveice = game:GetService("TeleportService")
+telepoitserveice:TeleportToPlaceInstance(game.PlaceId,game.JobId) 
+end
 ------- MAIN SCRIPT -------
 -- Wrath Admin by Zyrex and Silent#4508 - Whitelist by Buddy Guy#6837
 -- Use /e <Command> to silently use commands
@@ -1868,7 +1872,7 @@ function UseCommand(MESSAGE)
     if CMD("rj") or CMD("rejoin") then
         Notify("Success", "Rejoining...", 2)
         getgenv().Rejoining = true
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+		Rejoin("Rejoin Detected")
     end
     if CMD("auto") then
         States.AutoRespawn = not States.AutoRespawn
