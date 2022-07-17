@@ -181,7 +181,7 @@ end
 
 local Commands = {
     "Made by Zyrex, Silent#4508 & JJ Sploit On Top -- This admin is considered the most powerful and most updated admin script in all of prison life. Use it with ease and abuse ONLY WHEN NEEDED",
-    "INFO: -- Hope you are all proud of me for fixing the bug with Api/DLL or executor support!",
+    "INFO: -- Fixed Rejoin!",
     "TIP: -- press '.' to open the command bar.",
     "cmds -- shows this",
     "output -- shows the output",
