@@ -1,15 +1,31 @@
+-- Global Vars
 local ExecutionTime = tick()
 
-local function Rejoin(SIR)
-game.Players.LocalPlayer:kick(SIR)
-local telepoitserveice = game:GetService("TeleportService")
-telepoitserveice:TeleportToPlaceInstance(game.PlaceId,game.JobId) 
-end
-------- MAIN SCRIPT -------
--- Wrath Admin by Zyrex and Silent#4508 - Whitelist by Buddy Guy#6837
--- Use /e <Command> to silently use commands
+local Players = game:GetService("Players")
 
--- Use /console or F9 or Fn + F9 when you say cmds
+local Teams = game.Teams
+
+local rService = game:GetService("RunService")
+
+local rStorage = game:GetService("ReplicatedStorage")
+
+local UserInputService = game:GetService("UserInputService")
+
+local CoreGui = game:GetService("CoreGui")
+
+local HttpService = game:GetService("HttpService")
+
+local TweenService = game:GetService("TweenService")
+
+local RegionModule = require(game.ReplicatedStorage["Modules_client"]["RegionModule_client"])
+
+local TooltipModule = require(game.ReplicatedStorage.Modules_client.TooltipModule)
+
+local LocalPlayer = Players.LocalPlayer
+
+local Mouse = LocalPlayer:GetMouse()
+
+local scriptversion = "V2 Beta"
 
 -- Load Game:
 if not game:IsLoaded() then
@@ -19,19 +35,6 @@ if not game:IsLoaded() then
 end
 
 -- Script:
-local Players = game:GetService("Players")
-local Teams = game.Teams
-local rService = game:GetService("RunService")
-local rStorage = game:GetService("ReplicatedStorage")
-local UserInputService = game:GetService("UserInputService")
-local CoreGui = game:GetService("CoreGui")
-local HttpService = game:GetService("HttpService")
-local TweenService = game:GetService("TweenService")
-local RegionModule = require(game.ReplicatedStorage["Modules_client"]["RegionModule_client"])
-local TooltipModule = require(game.ReplicatedStorage.Modules_client.TooltipModule)
-local LocalPlayer = Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
-
 local Settings = {Prefix = ".", ToggleGui = "RightControl"}
 local ProtectedSettings = {tpcmds = true, killcmds = true, arrestcmds = true, givecmds = true, othercmds = true}
 local AdminSettings = {tpcmds = true, killcmds = true, arrestcmds = true, givecmds = true, othercmds = true}
@@ -150,12 +153,6 @@ function UnloadScript()
     end
 end
 
-if getgenv().WrathLoaded then
-    UnloadScript()
-else
-    getgenv().WrathLoaded = true
-end
-
 -- Spawn Points
 pcall(
     function()
@@ -180,9 +177,10 @@ for i, v in pairs(workspace:GetDescendants()) do
 end
 
 local Commands = {
-    "Made by Zyrex, Silent#4508 & JJ Sploit On Top -- This admin is considered the most powerful and most updated admin script in all of prison life. Use it with ease and abuse ONLY WHEN NEEDED",
-    "INFO: -- Fixed Rejoin!",
-    "TIP: -- press '.' to open the command bar.",
+    "Welcome To Wrath Admin",
+    "Made by Zyrex, Silent#4508 & JJ Sploit On Top",
+    "INFO: -- Reformated some of it c: Admin is broken and im not fixing!",
+    "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
     "=== TELEPORTS ===",
@@ -207,6 +205,7 @@ local Commands = {
     "dwp / delwaypoint [name] -- remove spawnpoint",
     "getwpnames / getwaypointnames -- gets waypoint names",
     "clwp -- clears waypoints",
+    "=== Troll Cmds ===",
     "vent [plr] -- vents player",
     "snack [plr] / vending [plr] -- snacks player",
     "slide [plr] -- slides player",
@@ -299,7 +298,6 @@ local Commands = {
     "unsa / breaksa -- breaks spam arrest",
     "arrest [plr,all] [number] -- arrests player with specified number of arrests (defaults to 1 if not specified)",
     "aa / arrestaura -- arrest aura",
-    "csa / crashsa -- short put powerful spam arrest",
     "=== OTHER ===",
     "getinvis / getinv -- get invisible players",
     "geta / getarmorspammers -- (gets armor spammers)",
@@ -345,17 +343,22 @@ local Commands = {
     "getflings / getf -- gets invisible flingers",
     "=== COLOR TEAMS ===",
     "caucasian / white -- white",
-    "blood -- red",
-    "africa / black -- black",
+    "red",
+    "black -- black",
     "blue",
     "purple",
     "pink",
-    "lime -- green",
-    "toothpaste -- cyan",
+    "green",
+    "cyan",
     "yellow",
     "gold",
     "grey",
-    "poop -- brown",
+    "brown",
+    "maroon",
+    "navy",
+    "salmon",
+    "lightpink",
+    "lightblue",
     "copyteam [plr] -- copies a plr's team [use again to disable]",
     "=== DEFENSE ===",
     "ac / anticrim -- stops you from becoming criminal",
@@ -383,33 +386,24 @@ local Commands = {
     "lag [strength] -- lags server with strength indefinitely",
     "unlag -- stops lag",
     "timeout -- kills server, doesnt freeze people's screens",
-    "=== COMMANDS FOR RANKED ===",
-    "admin [plr,all] -- admins a player or all",
-    "unadmin [plr] -- revokes admin access from player",
-    "getadmins -- gets all admins",
-    "cla / clearadmins -- clears all admins",
-    "asettings / as -- [killcmds/tpcmds/arrestcmds/givecmds/othercmds] [true, cmd enabled / false, cmd disabled]",
-    "getas / getadminsettings -- gets all current configuration settings for ranked players",
     "=== GUI COMMANDS ===",
     "gui / guis -- toggle gui",
     "bindgui / guikeybind [keycode] (eg. 'G' or 'LeftAlt' or 'One') -- keybind for gui"
 }
 
 local CustomColors = {
-    ["caucasian"] = {255, 255, 255}, -- White
     ["white"] = {255, 255, 255}, -- White
-    ["blood"] = {255, 0, 0}, -- Red
-    ["africa"] = {0, 0, 0}, -- Black
+    ["red"] = {255, 0, 0}, -- Red
     ["black"] = {0, 0, 0}, -- Black
     ["blue"] = {0, 17, 201},
     ["purple"] = {176, 5, 255},
     ["pink"] = {255, 0, 187},
-    ["lime"] = {0, 252, 8}, -- Green
-    ["toothpaste"] = {0, 255, 242}, -- Cyan
+    ["green"] = {0, 252, 8}, -- Green
+    ["cyan"] = {0, 255, 242}, -- Cyan
     ["yellow"] = {242, 250, 0},
     ["gold"] = {237, 167, 14},
     ["grey"] = {111, 110, 112},
-    ["poop"] = {59, 41, 0}, -- Brown
+    ["brown"] = {59, 41, 0}, -- Brown
     ["lightpink"] = {255, 182, 193},
     ["lightblue"] = {128, 128, 128},
     ["maroon"] = {128, 0, 0},
@@ -418,6 +412,13 @@ local CustomColors = {
 }
 
 local PauseChecks
+
+-- Checks if it is loaded
+if getgenv().WrathLoaded then
+    UnloadScript()
+else
+    getgenv().WrathLoaded = true
+end
 
 function SavePos(POS)
     pcall(
@@ -462,6 +463,12 @@ function Notify(Title, Text, Duration)
         }
     )
     AddLog(Title, Text)
+end
+
+local function Rejoin(SIR)
+    game.Players.LocalPlayer:kick(SIR)
+    local telepoitserveice = game:GetService("TeleportService")
+    telepoitserveice:TeleportToPlaceInstance(game.PlaceId, game.JobId)
 end
 
 function WhitelistItem(ITEM)
@@ -652,10 +659,18 @@ function GiveGuns()
     end
 end
 
+
+for i, v in pairs(workspace:FindFirstChild("Criminals Spawn"):GetChildren()) do
+    if v.Name == "SpawnLocation" then
+        v.Parent = game.Lighting
+    end
+end
+
+local SpawnLocation = game:GetService("Lighting"):FindFirstChild("SpawnLocation")
 function Crim(Player, isSpamArrest)
     pcall(
         function()
-            local SpawnLocation = game.Lighting:FindFirstChild("SpawnLocation")
+            local SpawnLocation = game:GetService("Lighting"):FindFirstChild("SpawnLocation")
             PauseChecks = true
             SavePos()
             local SavedTeam = LocalPlayer.TeamColor.Name
@@ -725,6 +740,8 @@ function Crim(Player, isSpamArrest)
     )
 end
 
+
+
 function Give(Player, TOOL, GIVER, TEAM, SPAWNED, DISABLESAVELOADPOS)
     PauseChecks = true
     pcall(
@@ -767,7 +784,7 @@ function Give(Player, TOOL, GIVER, TEAM, SPAWNED, DISABLESAVELOADPOS)
                         ItemHandler(workspace.Prison_ITEMS.giver[TOOL].ITEMPICKUP)
                     end
                 end
-                --LocalPlayer.Character.HumanoidRootPart.Anchored = true;
+                LocalPlayer.Character.HumanoidRootPart.Anchored = true
                 local CHAR = LocalPlayer.Character
                 CHAR.Humanoid.Name = "1"
                 local c = CHAR["1"]:Clone()
@@ -791,7 +808,7 @@ function Give(Player, TOOL, GIVER, TEAM, SPAWNED, DISABLESAVELOADPOS)
                     not Player.Character or
                     STOP > 500) and
                     STOP > 3
-                --LocalPlayer.Character.HumanoidRootPart.Anchored = false;
+                LocalPlayer.Character.HumanoidRootPart.Anchored = false
                 if not DISABLESAVELOADPOS then
                     if Player ~= LocalPlayer then
                         Loadchar(SavedTeam)
@@ -1723,49 +1740,6 @@ function SpeedKill(Tables)
     )
 end
 
-function VoidKill(Player)
-    pcall(
-        function()
-            local CHAR = LocalPlayer.Character
-            CHAR.Humanoid.Name = "1"
-            local c = CHAR["1"]:Clone()
-            c.Name = "Humanoid"
-            c.Parent = CHAR
-            CHAR["1"]:Destroy()
-            Workspace.CurrentCamera.CameraSubject = CHAR
-            CHAR.Animate.Disabled = true
-            task.wait(0.03)
-            CHAR.Animate.Disabled = false
-            CHAR.Humanoid.DisplayDistanceType = "None"
-            ItemHandler(workspace.Prison_ITEMS.single["Hammer"].ITEMPICKUP)
-            if not LocalPlayer.Backpack:FindFirstChild("Hammer") then
-                ItemHandler(workspace.Prison_ITEMS.giver.M9.ITEMPICKUP)
-            end
-            local tool = LocalPlayer.Backpack:FindFirstChild("Hammer") or LocalPlayer.Backpack:FindFirstChild("M9")
-            tool.Handle.Massless = true
-            tool.GripPos = Vector3.new(0, 0, -9999)
-            tool.Parent = CHAR
-            task.wait(0.03)
-            tool.Grip = CFrame.new(Vector3.new(0, 0, 0))
-            local STOP = 0
-            LoadPos()
-            repeat
-                STOP = STOP + 1
-                LocalPlayer.Character:SetPrimaryPartCFrame(Player.Character.Head.CFrame * CFrame.new(0, 0, 0.75))
-                task.wait(0.03)
-            until (not LocalPlayer.Character:FindFirstChild(tool.Name) or not LocalPlayer.Character.HumanoidRootPart or
-                not Player.Character.HumanoidRootPart or
-                not LocalPlayer.Character or
-                not Player.Character or
-                STOP > 500) and
-                STOP > 3
-            task.wait(1 / 5)
-            Loadchar()
-            LoadPos()
-        end
-    )
-end
-
 function CheckKeycode(Key)
     local Result
     pcall(
@@ -1872,7 +1846,7 @@ function UseCommand(MESSAGE)
     if CMD("rj") or CMD("rejoin") then
         Notify("Success", "Rejoining...", 2)
         getgenv().Rejoining = true
-		Rejoin("Rejoin Detected")
+        Rejoin("Rejoin Detected")
     end
     if CMD("auto") then
         States.AutoRespawn = not States.AutoRespawn
@@ -1896,7 +1870,7 @@ function UseCommand(MESSAGE)
         ChangeGuiToggle(States.AutoTeamChange, "Auto Team Change")
         Notify("Success", "Togged auto team change to " .. tostring(States.AutoTeamChange) .. ".")
     end
-    if CMD("kill") or CMD("rank") then
+    if CMD("kill") then
         Args[2] = Args[2]:lower()
         local First, Rest = Args[2]:sub(1, 1):upper(), Args[2]:sub(2)
         local Team = First .. Rest
@@ -2225,88 +2199,6 @@ function UseCommand(MESSAGE)
             Notify("Success", "Obtained riot armor.", 2)
         else
             Notify("Error", "You don't own the gamepass.", 2)
-        end
-    end
-    if CMD("csa") or CMD("crashsa") then
-        local Player = GetPlayer(Args[2], LocalPlayer)
-        if Player then
-            local Halt = false
-            SavePos()
-            task.spawn(Crim, Player, true)
-            task.spawn(
-                function()
-                    task.wait(5)
-                    Halt = true
-                end
-            )
-            repeat
-                task.wait()
-                if not Player or not Players:FindFirstChild(Player.Name) or Halt then
-                    break
-                end
-            until Player.TeamColor.Name == "Really red"
-            if not Halt then
-                for i = 1, 10 do
-                    task.spawn(
-                        function()
-                            for i = 1, 100 do
-                                task.spawn(
-                                    function()
-                                        task.spawn(
-                                            function()
-                                                for i = 1, 100 do
-                                                    task.spawn(
-                                                        function()
-                                                            task.spawn(
-                                                                function()
-                                                                    workspace.Remote.arrest:InvokeServer(
-                                                                        Player.Character:FindFirstChildWhichIsA("Part")
-                                                                    )
-                                                                end
-                                                            )
-                                                        end
-                                                    )
-                                                    if
-                                                        not Player or not Players:FindFirstChild(Player.Name) or
-                                                            Player.TeamColor.Name ~= "Really red"
-                                                     then
-                                                        break
-                                                    end
-                                                end
-                                            end
-                                        )
-                                    end
-                                )
-                                if
-                                    not Player or not Players:FindFirstChild(Player.Name) or
-                                        Player.TeamColor.Name ~= "Really red"
-                                 then
-                                    break
-                                end
-                            end
-                        end
-                    )
-                    task.spawn(
-                        function()
-                            pcall(
-                                function()
-                                    LocalPlayer.Character:SetPrimaryPartCFrame(
-                                        Player.Character.Head.CFrame * CFrame.new(0, 0, 1)
-                                    )
-                                end
-                            )
-                        end
-                    )
-                    if not Player or not Players:FindFirstChild(Player.Name) or Player.TeamColor.Name ~= "Really red" then
-                        break
-                    end
-                    task.wait()
-                end
-                task.wait(0.1)
-                LoadPos()
-            end
-        else
-            Notify("Error", Args[2] .. " is not a valid player.", 2)
         end
     end
     if CMD("sa") then
@@ -3504,7 +3396,7 @@ function UseCommand(MESSAGE)
     if CMD("vkill") then
         local Player = GetPlayer(Args[2], LocalPlayer)
         if Player then
-            VoidKill(Player)
+            Teleport(Player, CFrame.new(-1000, -10.7605114, -1100.21265))
             Notify("Success", "Void killed " .. Player.Name .. ".", 2)
         else
             Notify("Error", Args[2] .. " is not a valid player.", 2)
@@ -6479,10 +6371,9 @@ end
 
 Players.PlayerAdded:Connect(AntiPunchPlayerAdded)
 
---// God Mode:
 task.spawn(
     function()
-        while task.wait(0.03) do
+        while task.wait(0.0003) do
             if States.GodMode and not States.GivingKeycard then
                 if LocalPlayer.Character then
                     local Hum = LocalPlayer.Character:FindFirstChild("Humanoid")
@@ -6588,7 +6479,7 @@ task.spawn(
     end
 )
 
---- detectbring ---
+--- Anti Bring ---
 LocalPlayer.CharacterAdded:Connect(
     function(CHAR)
         CHAR.ChildAdded:Connect(
@@ -6597,23 +6488,13 @@ LocalPlayer.CharacterAdded:Connect(
                     if ITEM:IsA("Tool") then
                         if not CheckWhitelisted(ITEM) then
                             ITEM:Destroy()
-                            ITEM:Destroy()
-                            ITEM:Destroy()
-                            ITEM:Destroy()
-                            ITEM:Destroy()
-                            ITEM:Destroy()
-                            ITEM:Destroy()
                             pcall(
                                 function()
                                     SavePos(POS)
-                                    States.GodMode = true
-                                    LocalPlayer.Character.Torso.Anchored = true
-                                    ITEM:Destroy()
-                                    wait(1)
-                                    States.GodMode = false
-                                    LocalPlayer.Character.Torso.Anchored = false
-                                    ITEM:Destroy()
-                                    ITEM:Destroy()
+                                    local char = game.Players.LocalPlayer.character
+                                    local char1 = char:clone()
+                                    char:destroy()
+                                    char1 = char
                                     ITEM:Destroy()
                                     wait(6)
                                     LoadPos()
@@ -7193,26 +7074,21 @@ loadstring(
                                                                LoadPos();
                                                                end;
                                                                end);]]
+
+-- Anti Crim Anti Criminal Anticrim Anticriminal 
+
+local isplayerteam = tostring(LocalPlayer.Team)
 rService.Heartbeat:Connect(
     function()
         if States.AntiCriminal then
-            if TeamEvent ~= "Bright blue" then
+            if isplayerteam == "Really red" or "Criminals" or "bright orange" or "Inmates" or "Neutral" then
                 States.GodMode = true
                 TeamEvent("Bright blue")
                 States.GodMode = false
-            elseif #Teams.Guards:GetPlayers() > 8 then
-                TeamEvent("Medium stone grey")
-            elseif TeamEvent == "Really red" then
+            elseif isplayerteam ~= "Bright blue" or "Guards" then
                 States.GodMode = true
                 TeamEvent("Bright blue")
                 States.GodMode = false
-            elseif TeamEvent == "Bright orange" then
-                States.GodMode = true
-                TeamEvent("Bright blue")
-                States.GodMode = false
-            else
-                local ERROR = "There may be an issue with your executor or there may be an issue with the script"
-                print(ERROR)
             end
         end
     end
@@ -9218,34 +9094,20 @@ for i, v in next, MainGuiObjects do
     end
 end
 
---// Init:
-for i, v in pairs(workspace:FindFirstChild("Criminals Spawn"):GetChildren()) do
-    if v.Name == "SpawnLocation" then
-        v.Parent = game.Lighting
-    end
-end
-
 ToggleGuis()
 
 -- lazy
 ChangeGuiToggle(false, "Anti-Crash")
 
-Loadchar()
+local executorname = identifyexecutor()
 
-print("LOADED WRATH ADMIN! Made by Silent#4508 & Zyrex")
+if shared.notify_of_executor == true then
+Notify(executorname, "Has Been Successfully Identified")
+wait(3)
+else
+Notify(scriptversion)
+end
 
 AddLog("Success", "Loaded Wrath Admin in " .. tostring(tick() - ExecutionTime) .. " second(s).")
-
-for k, v in ipairs(table) do
-    --abcde..
-    y =
-        [=[
-                                                                  x=[[
-                                                                  x is a multi line string
-                                                                  ]]
-                                                                  but its definition is iside a highest level string!
-                                                                  ]=]
-    print(' "" ')
-
-    s = math.sin(x)
-end
+wait(1)
+Notify("Script Version Is", scriptversion, 5)
