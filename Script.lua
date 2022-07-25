@@ -1,5 +1,3 @@
-shared.notify_of_executor = true 
-
 -- Global Vars
 local ExecutionTime = tick()
 
