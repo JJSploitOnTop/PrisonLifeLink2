@@ -179,7 +179,7 @@ end
 local Commands = {
     "Welcome To Wrath Admin",
     "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
-    "INFO: -- Reformated some of it c: Admin is broken and im not fixing!",
+    "INFO: -- Updated AntiBring So I Dont Get Bothered!",
     "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
@@ -6492,6 +6492,9 @@ task.spawn(
     end
 )
 
+local char = game.Players.LocalPlayer.Character
+local rootpart = char:FindFirstChild("HumanoidRootPart")
+
 --- Anti Bring ---
 LocalPlayer.CharacterAdded:Connect(
     function(CHAR)
@@ -6499,18 +6502,23 @@ LocalPlayer.CharacterAdded:Connect(
             function(ITEM)
                 if States.AntiBring then
                     if ITEM:IsA("Tool") then
+                        rootpart.Anchored = true 
+                        SavePos(POS)
+                        ITEM:Destroy()
+                        LoadPos(POS)
+                      wait(.09) 
+            rootpart.Anchored = false
+                    print("1 step")
                         if not CheckWhitelisted(ITEM) then
-                            ITEM:Destroy()
                             pcall(
                                 function()
+                                rootpart.Anchored = true 
                                     SavePos(POS)
-                                    local char = game.Players.LocalPlayer.character
-                                    local char1 = char:clone()
-                                    char:destroy()
-                                    char1 = char
                                     ITEM:Destroy()
-                                    wait(6)
-                                    LoadPos()
+                                    LoadPos(POS)
+                                    wait(.09) 
+                                    rootpart.Anchored = false
+                                print("2 step")
                                 end
                             )
                         end
@@ -6520,6 +6528,8 @@ LocalPlayer.CharacterAdded:Connect(
         )
     end
 )
+
+
 
 --// Anti Arrest Lag:
 Info.Arrest = 0
