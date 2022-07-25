@@ -1,3 +1,5 @@
+shared.notify_of_executor = true 
+
 -- Global Vars
 local ExecutionTime = tick()
 
@@ -178,7 +180,7 @@ end
 
 local Commands = {
     "Welcome To Wrath Admin",
-    "Made by Zyrex, Silent#4508 & JJ Sploit On Top",
+    "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
     "INFO: -- Reformated some of it c: Admin is broken and im not fixing!",
     "Press . for command bar",
     "cmds -- shows this",
@@ -432,6 +434,18 @@ function SavePos(POS)
         SavedCameraPosition = Camera.CFrame
     end
 end
+
+firetouchinterest = function(base, part)
+    local oldp = part.Parent;
+    local oldc = part.CFrame;
+    part.Parent = workspace;
+    part.Transparency = 1;
+    part.CFrame = base.CFrame;
+    task.wait();
+    part.Parent = oldp;
+    part.Transparency = 0;
+    part.CFrame = oldc;
+end;
 
 function LoadPos()
     if SavedPosition and LocalPlayer.Character then
@@ -2536,7 +2550,7 @@ function UseCommand(MESSAGE)
     if CMD("drop") then
         local Player = GetPlayer(Args[2], LocalPlayer)
         if Player then
-            Teleport(Player, CFrame.new(799, 1162, 2412))
+            Teleport(Player, CFrame.new(-50, -50, -100))
             Notify("Success", "Teleported " .. Player.Name .. " to drop.", 2)
         else
             Notify("Error", Args[2] .. " is not a valid player.", 2)
@@ -3396,7 +3410,7 @@ function UseCommand(MESSAGE)
     if CMD("vkill") then
         local Player = GetPlayer(Args[2], LocalPlayer)
         if Player then
-            Teleport(Player, CFrame.new(-1000, -10.7605114, -1100.21265))
+            Teleport(Player, CFrame.new(9e9, 9e9, 100))
             Notify("Success", "Void killed " .. Player.Name .. ".", 2)
         else
             Notify("Error", Args[2] .. " is not a valid player.", 2)
@@ -3937,7 +3951,8 @@ function UseCommand(MESSAGE)
 
         if #FoundServers > 0 then
             Notify("Success", "Server hopping...", 2)
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, FoundServers[math.random(1, #FoundServers)])
+    local telepoitserveice = game:GetService("TeleportService")
+    telepoitserveice:TeleportToPlaceInstance(game.PlaceId, FoundServers[math.random(1, #FoundServers)])
         else
             Notify("Error", "Couldn't find a server to join.", 2)
         end
@@ -8853,9 +8868,9 @@ MainGuiObjects.Toggle_17.MouseButton1Click:Connect(
 
 MainGuiObjects.UICorner_30.CornerRadius = UDim.new(0, 5)
 MainGuiObjects.UICorner_30.Parent = MainGuiObjects.Toggle_17
-
+pcall(protect_gui, WrathAdminGuiMain)
 MainGuiObjects.TextLabel_20.Parent = MainGuiObjects.Toggle_17
-MainGuiObjects.TextLabel_20.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MainGuiObjects.TextLabel_20.BackgroundColor3 = Color3.fromRGB(15, 33, 49)
 MainGuiObjects.TextLabel_20.BackgroundTransparency = 1.000
 MainGuiObjects.TextLabel_20.Position = UDim2.new(0.800000012, 0, 0, 0)
 MainGuiObjects.TextLabel_20.Size = UDim2.new(0, 45, 0, 25)
@@ -9001,18 +9016,18 @@ function AddLog(Type, Text)
     local Log = Instance.new("TextButton")
     Log.Name = "Log"
     Log.Parent = MainGuiObjects.OutputListFrame
-    Log.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
-    Log.BorderColor3 = Color3.fromRGB(27, 42, 53)
+    Log.BackgroundColor3 = Color3.fromRGB(52, 33, 33)
+    Log.BorderColor3 = Color3.fromRGB(22, 8, 0)
     Log.BorderSizePixel = 0
     Log.AutoButtonColor = false
     Log.Font = Enum.Font.Code
     Log.Text = "[" .. Type:upper() .. "] " .. Text
     if Type:lower() == "success" then
-        Log.TextColor3 = Color3.fromRGB(0, 255, 0)
+        Log.TextColor3 = Color3.fromRGB(0, 255, 38)
     elseif Type:lower() == "error" then
-        Log.TextColor3 = Color3.fromRGB(255, 0, 0)
+        Log.TextColor3 = Color3.fromRGB(255, 51, 51)
     else
-        Log.TextColor3 = Color3.fromRGB(0, 0, 255)
+        Log.TextColor3 = Color3.fromRGB(0, 153, 43)
     end
     Log.RichText = true
     Log.TextSize = 14.000
