@@ -179,7 +179,7 @@ end
 local Commands = {
     "Welcome To Wrath Admin",
     "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
-    "INFO: -- Updated AntiBring So I Dont Get Bothered!",
+    "INFO: -- Updated Bring Expect Faster More Efficent Of A Bring!",
     "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
@@ -711,7 +711,7 @@ function Crim(Player, isSpamArrest)
             Workspace.CurrentCamera.CameraSubject = CHAR
 
             CHAR.Animate.Disabled = false
-            wait(.01)
+            rService.Heartbeat:wait(0.03)
             CHAR.Animate.Disabled = true
 
             CHAR.Humanoid.DisplayDistanceType = "None"
@@ -741,7 +741,7 @@ function Crim(Player, isSpamArrest)
                     break
                 end
                 firetouchinterest(Player.Character.Head, SpawnLocation, 0)
-                task.wait(0.03)
+                rService.Heartbeat:wait(.03)
             until (not LocalPlayer.Character:FindFirstChild(tool.Name) or not LocalPlayer.Character or
                 not Player.Character) and
                 STOP > 3
@@ -1061,7 +1061,7 @@ function Teleport(Player, Position)
                 LocalPlayer.Character:SetPrimaryPartCFrame(Position)
                 task.spawn(
                     function()
-                        rService.RenderStepped:wait()
+                        rService.Heartbeat:Wait()
                         Camera.CFrame = SavedCameraPosition
                     end
                 )
@@ -1077,6 +1077,7 @@ function Teleport(Player, Position)
                 CHAR["1"]:Destroy()
                 Workspace.CurrentCamera.CameraSubject = CHAR
                 CHAR.Animate.Disabled = true
+                rService.Heartbeat:Wait(.03)
                 CHAR.Animate.Disabled = false
                 CHAR.Humanoid.DisplayDistanceType = "None"
                 local tool = LocalPlayer.Backpack:FindFirstChild("Hammer") or LocalPlayer.Backpack:FindFirstChild("M9")
@@ -1087,7 +1088,7 @@ function Teleport(Player, Position)
                     STOP = STOP + 1
                     LocalPlayer.Character:SetPrimaryPartCFrame(Position)
                     Player.Character:SetPrimaryPartCFrame(LocalPlayer.Character.Head.CFrame * CFrame.new(0, 0, -0.75))
-                    task.wait(0.03)
+                    rService.Heartbeat:Wait(.03)
                 until (not LocalPlayer.Character:FindFirstChild(tool.Name) or not LocalPlayer.Character or
                     not Player.Character or
                     STOP > 500) and
@@ -1712,6 +1713,7 @@ function ClosestCharacter(MaxDistance)
     end
     return Closest
 end
+
 
 function SpeedKill(Tables)
     local Events = {}
@@ -6386,7 +6388,7 @@ Players.PlayerAdded:Connect(AntiPunchPlayerAdded)
 
 task.spawn(
     function()
-        while task.wait(0.0003) do
+        while rService.Heartbeat:wait(0.0003) do
             if States.GodMode and not States.GivingKeycard then
                 if LocalPlayer.Character then
                     local Hum = LocalPlayer.Character:FindFirstChild("Humanoid")
@@ -6502,13 +6504,6 @@ LocalPlayer.CharacterAdded:Connect(
             function(ITEM)
                 if States.AntiBring then
                     if ITEM:IsA("Tool") then
-                        rootpart.Anchored = true 
-                        SavePos(POS)
-                        ITEM:Destroy()
-                        LoadPos(POS)
-                      wait(.09) 
-            rootpart.Anchored = false
-                    print("1 step")
                         if not CheckWhitelisted(ITEM) then
                             pcall(
                                 function()
@@ -6516,9 +6511,8 @@ LocalPlayer.CharacterAdded:Connect(
                                     SavePos(POS)
                                     ITEM:Destroy()
                                     LoadPos(POS)
-                                    wait(.09) 
-                                    rootpart.Anchored = false
-                                print("2 step")
+                                 wait(.09) 
+                               rootpart.Anchored = false
                                 end
                             )
                         end
