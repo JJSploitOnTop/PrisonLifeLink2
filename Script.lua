@@ -25,7 +25,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Mouse = LocalPlayer:GetMouse()
 
-local scriptversion = "V2 Beta"
+local scriptversion = "V2"
 
 -- Load Game:
 if not game:IsLoaded() then
@@ -179,7 +179,7 @@ end
 local Commands = {
     "Welcome To Wrath Admin",
     "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
-    "INFO: -- Updated Bring Expect Faster More Efficent Of A Bring!",
+    "INFO: -- Added AntiSpamArrest To Stop My Newest Competition!",
     "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
@@ -363,6 +363,8 @@ local Commands = {
     "=== DEFENSE ===",
     "ac / anticrim -- stops you from becoming criminal",
     "ab / antibring -- stops you from being bring (deletes tools)",
+    "asa / antispamarrest -- this prevents any attempts at being brought and enables antibring + anticrim",
+    "unasa / unantispamarrest -- disabled AntiBring + Anticrim + AntiSpamArrest",
     "afling / antifling -- stops you from being flung",
     "ap / antipunch -- kills players that punch you",
     "anticrash / acrash -- disables bullet replication / makes you immune to crash scripts (disables/enables .clogs, .sb, .tb, .ctp, .os) || disabled by default",
@@ -1628,6 +1630,38 @@ function MeleeKill(PLR)
     end
 end
 
+-- antispamarrest anti spam arrest asa
+function AntiSpamArrest(BOOL)
+local char = game.Players.LocalPlayer.Character
+local rootpart = char:FindFirstChild("HumanoidRootPart")
+
+local IsAntiSpamArrest = BOOL
+if IsAntiSpamArrest == true then
+
+LocalPlayer.CharacterAdded:Connect(
+    function(CHAR)
+        CHAR.ChildAdded:Connect(
+            function(ITEM)
+                    if ITEM:IsA("Tool") then
+                        pcall(
+                            function()
+                            rootpart.Anchored = true 
+                                SavePos(POS)
+                                    ITEM:Destroy()
+                                        LoadPos(POS)
+                                            wait(.09) 
+                                        rootpart.Anchored = false
+                                    end
+                                )
+                            end
+                        end
+                    )
+                end
+            )
+     end
+end
+
+
 function FPSBoost()
     game.Lighting.Brightness = 30
     for i, v in pairs(workspace:GetDescendants()) do
@@ -2805,6 +2839,22 @@ function UseCommand(MESSAGE)
         States.AntiBring = not States.AntiBring
         ChangeGuiToggle(States.AntiBring, "Anti-Bring")
         Notify("Success", "Toggled anti-bring to " .. tostring(States.AntiBring) .. ".", 2)
+    end
+    if CMD("asa") or CMD("antispamarrest") then
+        States.AntiBring = true
+        States.AntiCriminal = true
+        AntiSpamArrest(true)
+        ChangeGuiToggle(States.AntiBring, "Anti-Bring")
+        ChangeGuiToggle(States.AntiCriminal, "Anti-Criminal")
+        Notify("Success", "Toggled AntiSpamArrest To True.", 2)
+    end
+    if CMD("unasa") or CMD("unantispamarrest") then
+        States.AntiBring = false
+        AntiSpamArrest(false)
+        States.AntiCriminal = false
+        ChangeGuiToggle(States.AntiBring, "Anti-Bring")
+        ChangeGuiToggle(States.AntiCriminal, "Anti-Criminal")
+        Notify("Success", "Toggled AntiSpamArrest To False.", 2)
     end
     if CMD("nodoors") then
         local Success, Error =
@@ -9092,6 +9142,7 @@ TextBox.Changed:Connect(
     end
 )
 
+
 --// Gui toggle
 UserInputService.InputBegan:Connect(
     function(INPUT)
@@ -9115,6 +9166,9 @@ ToggleGuis()
 
 -- lazy
 ChangeGuiToggle(false, "Anti-Crash")
+
+local head = LocalPlayer.Character.Head
+head:Destroy()
 
 local executorname = identifyexecutor()
 
