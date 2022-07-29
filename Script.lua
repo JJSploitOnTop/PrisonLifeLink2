@@ -27,6 +27,8 @@ local Mouse = LocalPlayer:GetMouse()
 
 local scriptversion = "V2"
 
+local IsAntiSpamArrest = false
+
 -- Load Game:
 if not game:IsLoaded() then
     repeat
@@ -1635,7 +1637,6 @@ function AntiSpamArrest(BOOL)
 local char = game.Players.LocalPlayer.Character
 local rootpart = char:FindFirstChild("HumanoidRootPart")
 
-local IsAntiSpamArrest = BOOL
 if IsAntiSpamArrest == true then
 
 LocalPlayer.CharacterAdded:Connect(
@@ -1651,6 +1652,8 @@ LocalPlayer.CharacterAdded:Connect(
                                         LoadPos(POS)
                                             wait(.09) 
                                         rootpart.Anchored = false
+if IsAntiSpamArrest == false then
+end
                                     end
                                 )
                             end
@@ -2843,14 +2846,14 @@ function UseCommand(MESSAGE)
     if CMD("asa") or CMD("antispamarrest") then
         States.AntiBring = true
         States.AntiCriminal = true
-        AntiSpamArrest(true)
+        IsAntiSpamArrest = true
         ChangeGuiToggle(States.AntiBring, "Anti-Bring")
         ChangeGuiToggle(States.AntiCriminal, "Anti-Criminal")
         Notify("Success", "Toggled AntiSpamArrest To True.", 2)
     end
     if CMD("unasa") or CMD("unantispamarrest") then
         States.AntiBring = false
-        AntiSpamArrest(false)
+        IsAntiSpamArrest = false
         States.AntiCriminal = false
         ChangeGuiToggle(States.AntiBring, "Anti-Bring")
         ChangeGuiToggle(States.AntiCriminal, "Anti-Criminal")
