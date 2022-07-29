@@ -1,3 +1,5 @@
+shared.notify_of_executor = true 
+
 -- Global Vars
 local ExecutionTime = tick()
 
@@ -25,7 +27,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Mouse = LocalPlayer:GetMouse()
 
-local scriptversion = "V2"
+local scriptversion = "V2.01"
 
 local IsAntiSpamArrest = false
 
@@ -181,7 +183,7 @@ end
 local Commands = {
     "Welcome To Wrath Admin",
     "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
-    "INFO: -- Added AntiSpamArrest To Stop My Newest Competition!",
+    "INFO: -- Fixed SpamArrest Again!",
     "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
@@ -686,7 +688,6 @@ local SpawnLocation = game:GetService("Lighting"):FindFirstChild("SpawnLocation"
 function Crim(Player, isSpamArrest)
     pcall(
         function()
-            local SpawnLocation = game:GetService("Lighting"):FindFirstChild("SpawnLocation")
             PauseChecks = true
             SavePos()
             local SavedTeam = LocalPlayer.TeamColor.Name
@@ -697,15 +698,14 @@ function Crim(Player, isSpamArrest)
                 LocalPlayer.Character:SetPrimaryPartCFrame(Player.Character.Head.CFrame * CFrame.new(0, 0, 0.75))
                 task.spawn(
                     function()
-                        rService.RenderStepped:wait()
+                        rService.Heartbeat:wait()
                         Camera.CFrame = SavedCameraPosition
                     end
                 )
             end
-
-            SpawnLocation.Transparency = .5
+            SpawnLocation.Transparency = 1
             SpawnLocation.Anchored = true
-            SpawnLocation.CanCollide = false
+            SpawnLocation.CanCollide = true
             local CHAR = LocalPlayer.Character
             CHAR.Humanoid.Name = "1"
             local c = CHAR["1"]:Clone()
@@ -713,18 +713,14 @@ function Crim(Player, isSpamArrest)
             c.Parent = CHAR
             CHAR["1"]:Destroy()
             Workspace.CurrentCamera.CameraSubject = CHAR
-
             CHAR.Animate.Disabled = false
-            rService.Heartbeat:wait(0.03)
+            rService.Heartbeat:wait()
             CHAR.Animate.Disabled = true
-
             CHAR.Humanoid.DisplayDistanceType = "None"
-
             ItemHandler(workspace.Prison_ITEMS.single["Hammer"].ITEMPICKUP)
             if not LocalPlayer.Backpack:FindFirstChild("Hammer") then
                 ItemHandler(workspace.Prison_ITEMS.single["Remington 870"].ITEMPICKUP)
             end
-
             local tool =
                 LocalPlayer.Backpack:FindFirstChild("Hammer") or LocalPlayer.Backpack:FindFirstChild("Remington 870")
             WhitelistItem(tool)
@@ -745,11 +741,11 @@ function Crim(Player, isSpamArrest)
                     break
                 end
                 firetouchinterest(Player.Character.Head, SpawnLocation, 0)
-                rService.Heartbeat:wait(.03)
+                rService.Heartbeat:wait()
             until (not LocalPlayer.Character:FindFirstChild(tool.Name) or not LocalPlayer.Character or
                 not Player.Character) and
                 STOP > 3
-            task.wait(1 / 5)
+            rService.Heartbeat:wait(1 / 5)
             Loadchar(SavedTeam)
             LoadPos()
         end
@@ -9178,8 +9174,6 @@ local executorname = identifyexecutor()
 if shared.notify_of_executor == true then
 Notify(executorname, "Has Been Successfully Identified")
 wait(3)
-else
-Notify(scriptversion)
 end
 
 AddLog("Success", "Loaded Wrath Admin in " .. tostring(tick() - ExecutionTime) .. " second(s).")
