@@ -1,3 +1,5 @@
+shared.notify_of_executor = true 
+
 -- Global Vars
 local ExecutionTime = tick()
 
@@ -25,7 +27,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Mouse = LocalPlayer:GetMouse()
 
-local scriptversion = "V2.01"
+local scriptversion = "V2.02"
 
 local IsAntiSpamArrest = false
 
@@ -181,7 +183,7 @@ end
 local Commands = {
     "Welcome To Wrath Admin",
     "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
-    "INFO: -- Fixed SpamArrest Again!",
+    "Changelog: -- Fixed Snack!",
     "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
@@ -2553,7 +2555,7 @@ function UseCommand(MESSAGE)
     if CMD("snack") or CMD("vending") then
         local Player = GetPlayer(Args[2], LocalPlayer)
         if Player then
-            Teleport(Player, CFrame.new(949.114136, 101.051971, 2339.53491))
+            Teleport(Player, CFrame.new(948, 102, 2341, 1, -4, 0.01, -4, 1, 0.002, -0.017, -0.002, 0.9))
             Notify("Success", "Teleported " .. Player.Name .. " to vending machine.", 2)
         else
             Notify("Error", Args[2] .. " is not a valid player.", 2)
