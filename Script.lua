@@ -25,7 +25,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local Mouse = LocalPlayer:GetMouse()
 
-local scriptversion = "V2.02"
+local scriptversion = "V2.03"
 
 local IsAntiSpamArrest = false
 
@@ -181,7 +181,7 @@ end
 local Commands = {
     "Welcome To Wrath Admin",
     "Made by Zyrex, Silent#4508, JJ Sploit On Top, & Hiidk",
-    "Changelog: -- Fixed Snack!",
+    "Changelog: -- Made slk faster now stops CMZ or Localplayers godmode!",
     "Press . for command bar",
     "cmds -- shows this",
     "output -- shows the output",
@@ -5892,7 +5892,7 @@ task.spawn(
                     SpeedKill(SpeedKillPlayers)
                 end
             end
-            task.wait(0.03)
+            task.wait(0.01)
         end
     end
 )
@@ -6321,7 +6321,9 @@ task.spawn(
                 end
             end
             if next(SpeedKillPlayers) then
-                SpeedKill(SpeedKillPlayers)
+				while rService.Heartbeat:Wait() do
+               coroutine.wrap(SpeedKill)(SpeedKillPlayers)
+				end
             end
         end
     end
